@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+# Gói dựng và bản thảo thật không đưa lên git (bản quyền)
+du-an/
+*.indd
+*.idlk
+# ICC profile của nhà in: tải riêng, không commit
+*.icc
+*.icm

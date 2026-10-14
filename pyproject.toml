@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "htl"
+version = "0.1.0"
+description = "Hệ thống dàn trang sách tự động: bản thảo Word/JSON -> InDesign -> PDF/X in offset"
+requires-python = ">=3.10"
+dependencies = [
+    "lxml>=4.9",
+    "Pillow>=10.0",
+    "PyYAML>=6.0",
+    "PyMuPDF>=1.24",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+htl = "htl.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["htl*"]
+
+[tool.setuptools.package-data]
+htl = ["data/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

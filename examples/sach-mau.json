@@ -1,0 +1,42 @@
+{
+  "title": "Tim mạch học lâm sàng",
+  "chapters": [
+    {
+      "id": "ch01",
+      "source": "chapter-01 (bản dịch)",
+      "blocks": [
+        {"type": "paragraph", "role": "chapter_number", "runs": [{"text": "Chương 1"}]},
+        {"type": "paragraph", "role": "chapter_title", "runs": [{"text": "Bệnh tim thiếu máu cục bộ"}]},
+        {"type": "paragraph", "role": "h1", "runs": [{"text": "Đại cương"}]},
+        {"type": "paragraph", "role": "body", "runs": [
+          {"text": "Bệnh tim thiếu máu cục bộ là nguyên nhân tử vong hàng đầu"},
+          {"footnote": [{"type": "paragraph", "role": "footnote", "runs": [{"text": "Theo WHO, số liệu năm 2019."}]}]},
+          {"text": ". Nồng độ LDL-C mục tiêu < 1,4 mmol/L; HbA"},
+          {"text": "1c", "sub": true},
+          {"text": " < 7%. Thuốc chẹn "},
+          {"text": "β", "italic": false},
+          {"text": " được ưu tiên"},
+          {"text": "12", "sup": true},
+          {"text": "."}
+        ]},
+        {"type": "paragraph", "role": "list_number", "label": "1.\t", "runs": [{"text": "Thay đổi lối sống."}]},
+        {"type": "paragraph", "role": "list_number", "label": "2.\t", "runs": [{"text": "Điều trị nội khoa tối ưu."}]},
+        {"type": "figure", "image": "anh-goc/fig01-01.tif", "source_name": "Fig 1.1"},
+        {"type": "paragraph", "role": "caption", "runs": [{"text": "Hình 1.1. ", "bold": true}, {"text": "Điện tâm đồ 12 chuyển đạo."}]},
+        {"type": "paragraph", "role": "table_caption", "runs": [{"text": "Bảng 1.1. Liều thuốc chống kết tập tiểu cầu"}]},
+        {"type": "table", "header_rows": 1, "col_widths": [0.4, 0.3, 0.3], "rows": [
+          [
+            {"blocks": [{"type": "paragraph", "role": "table_head", "runs": [{"text": "Thuốc"}]}]},
+            {"blocks": [{"type": "paragraph", "role": "table_head", "runs": [{"text": "Liều dùng"}]}], "colspan": 2},
+            {"covered": true}
+          ],
+          [
+            {"blocks": [{"type": "paragraph", "role": "table_body", "runs": [{"text": "Aspirin"}]}]},
+            {"blocks": [{"type": "paragraph", "role": "table_body", "runs": [{"text": "Tấn công: 150–300 mg"}]}]},
+            {"blocks": [{"type": "paragraph", "role": "table_body", "runs": [{"text": "Duy trì: 75–100 mg/ngày"}]}]}
+          ]
+        ]}
+      ]
+    }
+  ]
+}

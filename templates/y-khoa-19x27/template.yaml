@@ -1,0 +1,128 @@
+# =============================================================================
+# MẪU LAYOUT: Sách y khoa dịch — khổ 19 × 27 cm, 1 cột chữ
+# =============================================================================
+# Thêm mẫu mới: sao chép cả thư mục này, đổi tên, sửa thông số bên dưới.
+#
+# Có 2 cách dùng mẫu:
+#  (A) KHUYÊN DÙNG — designer làm file mẫu InDesign (.indt) với đủ các
+#      paragraph style có TÊN như trong mục `roles` bên dưới, master page,
+#      tiêu đề chạy, số trang... rồi khai báo đường dẫn ở `indt`.
+#      Khi đó hình thức trình bày do file .indt quyết định hoàn toàn.
+#  (B) Chưa có .indt: script tự tạo tài liệu theo thông số trang và
+#      `paragraph_styles` bên dưới (đủ dùng để chạy thử, designer tinh chỉnh sau).
+# =============================================================================
+
+name: "Sách y khoa 19x27 — 1 cột"
+
+indt: null            # ví dụ: y-khoa-19x27.indt (đặt cùng thư mục với file này)
+body_master: null     # tên master cho trang nội dung trong .indt (null = master đầu tiên)
+style_map: style_map.yaml
+
+page:
+  width_mm: 190
+  height_mm: 270
+  bleed_mm: 3          # hỏi nhà in: thường 3 mm (một số nơi yêu cầu 5 mm)
+  facing_pages: true
+
+margins_mm: {top: 20, bottom: 24, inside: 22, outside: 17}
+columns: {count: 1, gutter_mm: 6}
+
+chapter_start: recto   # recto = chương mới luôn bắt đầu ở trang lẻ (bên phải); any = trang kế tiếp
+
+color:
+  # Tên ICC profile của điều kiện in — PHẢI THỐNG NHẤT VỚI NHÀ IN.
+  # Phổ biến: "Coated FOGRA39 (ISO 12647-2:2004)", "Japan Color 2001 Coated",
+  #           "PSO Coated v3", "Uncoated FOGRA29 (ISO 12647-2:2004)" (giấy ford).
+  cmyk_profile: "Coated FOGRA39 (ISO 12647-2:2004)"
+  # File .icc tương ứng để chuyển ảnh RGB -> CMYK ngay khi dựng (khuyên dùng).
+  # null = giữ ảnh RGB, InDesign chuyển khi xuất PDF/X.
+  icc_file: null
+  rendering_intent: perceptual     # perceptual (ảnh chụp, ảnh y khoa) | relative
+  black_point_compensation: true
+  gray_images: keep                # ảnh X-quang, CT, mô học trắng đen: giữ Grayscale (in bằng mực K)
+  tac_limit: 300                   # tổng lượng mực tối đa (%): couché ~300-330, ford ~260-280
+
+images:
+  min_ppi: 300                     # dưới mức này: cảnh báo
+  error_ppi: 200                   # dưới mức này: lỗi
+  sizing: natural_max_column       # column = luôn rộng bằng cột | natural_max_column = không phóng quá mức min_ppi
+  max_height_ratio: 0.85           # ảnh cao tối đa 85% vùng chữ
+
+pdf:
+  standard: PDFX4                  # PDFX4 (khuyên dùng) | PDFX1A (nếu nhà in yêu cầu)
+  preset_name: "HTL Offset PDF-X4"
+  crop_marks: true
+  registration_marks: true
+  page_information_marks: true
+  marks_offset_mm: 4.5             # phải lớn hơn bleed
+
+# -----------------------------------------------------------------------------
+# Vai trò -> tên paragraph style trong InDesign
+# -----------------------------------------------------------------------------
+roles:
+  chapter_number: "Chapter Number"
+  chapter_title: "Chapter Title"
+  h1: "H1"
+  h2: "H2"
+  h3: "H3"
+  h4: "H4"
+  body: "Body"
+  body_first: "Body First"
+  list_bullet: "List Bullet"
+  list_bullet_2: "List Bullet 2"
+  list_number: "List Number"
+  list_number_2: "List Number 2"
+  quote: "Quote"
+  box_title: "Box Title"
+  box: "Box Body"
+  caption: "Figure Caption"
+  table_caption: "Table Caption"
+  table_head: "Table Head"
+  table_body: "Table Body"
+  table_note: "Table Note"
+  reference: "Reference"
+  footnote: "Footnote"
+  figure: "Figure"
+  table: "Table Anchor"
+
+character_styles: {bold: "Bold", italic: "Italic", bold_italic: "Bold Italic"}
+table_style: "HTL Table"
+
+# Bảng màu (CMYK) dùng trong style. Chữ đen luôn dùng swatch [Black] = 100% K (overprint).
+swatches:
+  "HTL Accent": [100, 60, 0, 10]
+  "HTL Box Tint": [10, 3, 0, 0]
+
+# -----------------------------------------------------------------------------
+# Định nghĩa style — CHỈ dùng khi tự tạo tài liệu (indt: null) hoặc khi .indt
+# thiếu style. Đơn vị: pt (trừ khi ghi _mm). Font phải có đủ dấu tiếng Việt.
+# -----------------------------------------------------------------------------
+fonts:
+  serif: {family: "Noto Serif", regular: "Regular", bold: "Bold", italic: "Italic", bold_italic: "Bold Italic"}
+  sans: {family: "Noto Sans", regular: "Regular", bold: "Bold", italic: "Italic", bold_italic: "Bold Italic"}
+
+paragraph_styles:
+  "Body":           {font: serif, size: 10.5, leading: 14.5, align: justify, first_indent_mm: 5}
+  "Body First":     {based_on: "Body", first_indent_mm: 0}
+  "Chapter Number": {font: sans, weight: bold, size: 14, leading: 18, align: left, color: "HTL Accent", space_after: 6}
+  "Chapter Title":  {font: sans, weight: bold, size: 24, leading: 29, align: left, color: "HTL Accent", space_after: 36, keep_with_next: 3}
+  "H1":             {font: sans, weight: bold, size: 14, leading: 18, align: left, color: "HTL Accent", space_before: 18, space_after: 6, keep_with_next: 3}
+  "H2":             {font: sans, weight: bold, size: 12, leading: 16, align: left, space_before: 12, space_after: 4, keep_with_next: 3}
+  "H3":             {font: sans, weight: bold, size: 10.5, leading: 14.5, align: left, space_before: 9, space_after: 2, keep_with_next: 2}
+  "H4":             {font: serif, weight: bold_italic, size: 10.5, leading: 14.5, align: left, space_before: 6, keep_with_next: 2}
+  "List Bullet":    {based_on: "Body", first_indent_mm: -4, left_indent_mm: 4, bullet: true}
+  "List Bullet 2":  {based_on: "Body", first_indent_mm: -4, left_indent_mm: 8, bullet: true}
+  "List Number":    {based_on: "Body", first_indent_mm: -6, left_indent_mm: 6}
+  "List Number 2":  {based_on: "Body", first_indent_mm: -6, left_indent_mm: 12}
+  "Quote":          {based_on: "Body", weight: italic, left_indent_mm: 8, right_indent_mm: 8, first_indent_mm: 0, space_before: 6, space_after: 6}
+  "Box Title":      {font: sans, weight: bold, size: 10.5, leading: 14, align: left, color: "HTL Accent", space_before: 9, keep_with_next: 2}
+  "Box Body":       {font: sans, size: 9.5, leading: 13, align: left, left_indent_mm: 3, right_indent_mm: 3}
+  "Figure":         {size: 2, leading: 2, align: center, space_before: 9, space_after: 3, keep_with_next: 1}   # đoạn chứa ảnh (ảnh neo "Above Line")
+  "Figure Caption": {font: sans, size: 8.5, leading: 11.5, align: left, space_after: 9}
+  "Table Caption":  {font: sans, weight: bold, size: 9, leading: 12, align: left, space_before: 9, space_after: 3, keep_with_next: 1}
+  "Table Anchor":   {size: 6, leading: 8, align: left, space_after: 9}
+  "Table Head":     {font: sans, weight: bold, size: 8.5, leading: 11, align: left}
+  "Table Body":     {font: sans, size: 8.5, leading: 11, align: left}
+  "Table Note":     {font: sans, size: 7.5, leading: 10, align: left, space_after: 9}
+  "Reference":      {font: serif, size: 8.5, leading: 11.5, align: left, first_indent_mm: -5, left_indent_mm: 5}
+  "Footnote":       {font: serif, size: 8, leading: 10.5, align: left}

@@ -1,0 +1,15 @@
+# Ánh xạ style Word riêng cho dòng sách này (ưu tiên trước bảng mặc định).
+# Mỗi NXB nước ngoài thường đặt tên style riêng (Elsevier, Wolters Kluwer, Thieme...).
+# Chạy `htl inspect <file.docx>` để xem danh sách style đang có, rồi bổ sung vào đây.
+#
+# Ví dụ (bỏ dấu # để dùng):
+# - {pattern: 'CN', role: chapter_number}
+# - {pattern: 'CT', role: chapter_title}
+# - {pattern: 'H1|A-Head', role: h1}
+# - {pattern: 'H2|B-Head', role: h2}
+# - {pattern: 'TX|TXI|Para', role: body}
+# - {pattern: 'FGC|Fig ?Legend', role: caption}
+# - {pattern: 'TT|Table ?Title', role: table_caption}
+# - {pattern: 'BX.*', role: box}
+# - {pattern: 'REF.*', role: reference}
+[]
