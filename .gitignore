@@ -12,3 +12,9 @@ du-an/
 # ICC profile của nhà in: tải riêng, không commit
 *.icc
 *.icm
+# Demo: tạo lại bằng python demo/chay_demo.py
+demo/anh-goc/
+demo/ket-qua/goi-indesign/
+demo/ket-qua/goi-indesign.zip
+demo/ket-qua/*.tmp.pdf
+demo/ket-qua/xem-truoc-bi-sua.pdf

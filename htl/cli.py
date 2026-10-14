@@ -1,4 +1,4 @@
-"""Giao diện dòng lệnh: htl build | verify | preflight | inspect."""
+"""Giao diện dòng lệnh: htl build | preview | verify | preflight | inspect."""
 from __future__ import annotations
 
 import argparse
@@ -57,6 +57,14 @@ def cmd_preflight(a) -> int:
     return 0 if res.ok else 1
 
 
+def cmd_preview(a) -> int:
+    from .preview import render_preview
+
+    out = render_preview(a.build, a.out, a.font_dir)
+    print(f"Bản xem trước (KHÔNG dùng để in): {out}")
+    return 0
+
+
 def cmd_inspect(a) -> int:
     """Liệt kê style Word đang dùng và vai trò hệ thống gán — để lập style_map cho NXB mới."""
     from .config import load_style_map
@@ -110,6 +118,12 @@ def main(argv=None) -> int:
     p.add_argument("-t", "--template", help="Mẫu layout để lấy thông số (khổ, bleed, ppi, TAC)")
     p.add_argument("--report", help="Nơi ghi báo cáo .md")
     p.set_defaults(func=cmd_preflight)
+
+    pv = sub.add_parser("preview", help="Dựng PDF xem trước (proof) không cần InDesign — không dùng để in")
+    pv.add_argument("build", help="Thư mục gói dựng")
+    pv.add_argument("-o", "--out", help="File PDF đầu ra (mặc định build/output/xem-truoc.pdf)")
+    pv.add_argument("--font-dir", help="Thư mục font có Regular/Bold/Italic/BoldItalic.ttf")
+    pv.set_defaults(func=cmd_preview)
 
     i = sub.add_parser("inspect", help="Xem style Word trong bản thảo và vai trò được gán")
     i.add_argument("inputs", nargs="+")

@@ -135,5 +135,15 @@ def test_json_input_from_translation_system(tmp_path):
     report, out = build(BuildOptions(inputs=[str(src)], template=str(TPL), out=str(tmp_path / "b")))
     assert report.ok
     content = json.loads((out / "content.json").read_text(encoding="utf-8"))
-    assert content["chapters"][0]["paragraphs"] == ["Chương 1", "Insulin glargine"]
+    assert content["chapters"][0]["paragraphs"] == ["Chương 1", "Insulin glargine\ue000"]
     assert content["chapters"][0]["footnotes"] == ["Tên biệt dược."]
+
+
+def test_preview_then_verify_end_to_end(tmp_path, two_chapters):
+    from htl.preview import render_preview
+    from htl.verify import verify
+
+    _, out = build(BuildOptions(inputs=[str(two_chapters)], template=str(TPL), out=str(tmp_path / "b"), title="Sách thử"))
+    pdf = render_preview(out)
+    res = verify(pdf, out)
+    assert res.ok, res.to_markdown()

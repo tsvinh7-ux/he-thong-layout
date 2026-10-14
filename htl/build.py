@@ -9,7 +9,7 @@ from pathlib import Path
 from .config import load_style_map, load_template
 from .icml import fig_marker, write_chapter_icml
 from .images import match_hires, process_images
-from .ir import Figure, Paragraph, Table, footnote_texts, iter_blocks, main_text, to_dict
+from .ir import FN_MARK, Figure, Paragraph, Table, footnote_texts, iter_blocks, main_text, to_dict
 from .readers import read_book
 from .report import Report
 from .structure import finalize
@@ -59,7 +59,7 @@ def build(opts: BuildOptions) -> tuple[Report, Path]:
     placed = process_images(book, tpl, out / "images", report)
 
     chapters_job = []
-    content = {"title": book.title, "chapters": []}
+    content = {"title": book.title, "footnote_marker": FN_MARK, "chapters": []}
     for ch in book.chapters:
         icml_name = f"stories/{ch.id}.icml"
         write_chapter_icml(ch, tpl, out / icml_name)
@@ -81,7 +81,7 @@ def build(opts: BuildOptions) -> tuple[Report, Path]:
         content["chapters"].append({
             "id": ch.id,
             "title": ch.title,
-            "paragraphs": main_text(ch.blocks),
+            "paragraphs": main_text(ch.blocks, fn_marker=FN_MARK),
             "footnotes": fns,
             "figures": [f.id for f in figures],
             "headings": [p.text for p in paras if p.role in ("chapter_title", "chapter_number", "h1", "h2")],

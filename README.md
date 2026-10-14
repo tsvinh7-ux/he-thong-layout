@@ -40,6 +40,11 @@ Dòng sách đang tập trung: **sách y khoa dịch có bản quyền nước n
  Gửi nhà in
 ```
 
+## Demo
+
+`python demo/chay_demo.py` — 2 chương sách y khoa mẫu → gói InDesign + PDF xem trước + đối chiếu nội dung.
+Xem [demo/README.md](demo/README.md).
+
 ## Cài đặt
 
 Máy chạy bước `build`/`verify`/`preflight` (Windows/Mac/Linux đều được):
@@ -68,6 +73,9 @@ htl build du-an/sach-01/ban-thao/ \
 
 # 2. Trong InDesign: File > Scripts > Browse... chọn build/run_in_indesign.jsx
 #    -> build/output/sach.indd, build/output/sach.pdf, build/output/indesign_report.json
+
+#    (Chưa có InDesign? Xem trước nội dung — KHÔNG dùng để in:)
+htl preview du-an/sach-01/build              # -> build/output/xem-truoc.pdf
 
 # 3. Sau khi designer tinh chỉnh và xuất PDF cuối:
 htl verify du-an/sach-01/build du-an/sach-01/build/output/sach.pdf
@@ -143,6 +151,7 @@ htl/
   icml.py                 Sinh story ICML cho InDesign
   build.py                Điều phối bước build
   verify.py               Đối chiếu nội dung PDF với bản thảo
+  preview.py              PDF xem trước không cần InDesign
   preflight.py            Kiểm tra kỹ thuật PDF
 indesign/htl_build.jsx    Script InDesign (ExtendScript)
 templates/                Các mẫu layout

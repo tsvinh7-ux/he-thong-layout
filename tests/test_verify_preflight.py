@@ -167,3 +167,17 @@ def test_preflight_clean_geometry(tmp_path):
     text = "\n".join(res.errors)
     assert "Bleed" not in text and "TrimBox" not in text and "Khổ thành phẩm" not in text
     assert "Tổng lượng mực" not in text
+
+
+def test_footnote_number_only_accepted_at_marked_position():
+    from htl.verify import align
+
+    exp = ["chẩn", "đoán", "đúng", "kỹ", "thuật\ue000.", "theo", "who"]
+    ok = ["chẩn", "đoán", "đúng", "kỹ", "thuật1.", "theo", "who"]
+    matched, missing, extra = align(exp, ok)
+    assert matched == len(exp) and not missing and not extra
+    # Số xuất hiện ở chỗ bản thảo không có chú thích -> phải bị bắt
+    exp2 = ["bảng", "2.1.", "theo", "who", "năm", "nay"]
+    bad = ["bảng", "2.11.", "theo", "who", "năm", "nay"]
+    _, missing2, extra2 = align(exp2, bad)
+    assert missing2 and extra2

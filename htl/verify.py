@@ -18,6 +18,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .ir import FN_MARK
 from .textnorm import norm_for_compare, tokens
 
 K = 4  # độ dài k-gram dùng để đồng bộ lại sau chỗ lệch
@@ -127,6 +128,23 @@ def _find(idx, key, lo, hi) -> int | None:
     return None
 
 
+_PAT_CACHE: dict[str, re.Pattern] = {}
+
+
+def _eq(e: str, p: str) -> bool:
+    """So token bản thảo với token PDF. Mốc chú thích trong bản thảo khớp với
+    số chú thích (1–3 chữ số) mà InDesign tự đánh ở đúng vị trí đó."""
+    if e == p:
+        return True
+    if FN_MARK not in e:
+        return False
+    pat = _PAT_CACHE.get(e)
+    if pat is None:
+        pat = re.compile(r"\d{0,3}".join(re.escape(x) for x in e.split(FN_MARK)))
+        _PAT_CACHE[e] = pat
+    return pat.fullmatch(p) is not None
+
+
 def align(exp: list[str], pdf: list[str]):
     """Dóng hàng tuần tự. Trả về (matched_count, missing_ranges, extra_ranges)."""
     pidx = _kgram_index(pdf)
@@ -136,7 +154,7 @@ def align(exp: list[str], pdf: list[str]):
     extra: list[tuple[int, int]] = []
     n, m = len(exp), len(pdf)
     while i < n and j < m:
-        if exp[i] == pdf[j]:
+        if _eq(exp[i], pdf[j]):
             i += 1
             j += 1
             matched += 1
@@ -174,13 +192,8 @@ def _concat_match(exp, pdf, i, j):
         for b in range(1, 4):
             if a == b == 1:
                 continue
-            if "".join(exp[i:i + a]) == "".join(pdf[j:j + b]):
+            if _eq("".join(exp[i:i + a]), "".join(pdf[j:j + b])):
                 return a, b
-    # Số chú thích chân trang dính vào từ: "bệnh" vs "bệnh1"
-    t = pdf[j]
-    m = re.fullmatch(r"(.*?)(\d+)", t)
-    if m and m.group(1) == exp[i]:
-        return 1, 1
     return None
 
 
@@ -206,7 +219,8 @@ def verify(pdf_path: str | Path, build_dir: str | Path, allowed_extra: list[str]
     headings: list[list[str]] = []
     for ch in content["chapters"]:
         for pi, ptext in enumerate(ch["paragraphs"]):
-            t = tokens(ptext)
+            # Mốc chú thích đứng riêng (sau dấu cách) -> bỏ; số chú thích là phần "thừa" hợp lệ.
+            t = [x for x in tokens(ptext) if x != FN_MARK]
             exp += t
             where += [f"{ch['id']} ¶{pi + 1}"] * len(t)
         headings += [tokens(h) for h in ch.get("headings", []) if h.strip()]
@@ -214,7 +228,7 @@ def verify(pdf_path: str | Path, build_dir: str | Path, allowed_extra: list[str]
         headings.append(tokens(content["title"]))
     fn_list = [(ch["id"], fi + 1, tokens(f)) for ch in content["chapters"] for fi, f in enumerate(ch["footnotes"])]
 
-    vocab = set(exp) | {t for _, _, ft in fn_list for t in ft}
+    vocab = {t.replace(FN_MARK, "") for t in exp} | {t for _, _, ft in fn_list for t in ft}
     pdf, pages = pdf_tokens(pdf_path, vocab)
     res.expected_tokens, res.pdf_tokens = len(exp), len(pdf)
 

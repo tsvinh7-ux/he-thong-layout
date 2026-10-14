@@ -170,15 +170,22 @@ def iter_figures(book: Book):
                 yield ch, b
 
 
-def main_text(blocks) -> list[str]:
-    """Văn bản dòng chính (không gồm chú thích chân trang), theo thứ tự đọc.
+FN_MARK = "\ue000"  # vị trí số chú thích chân trang trong văn bản đối chiếu
+
+
+def main_text(blocks, fn_marker: str = "") -> list[str]:
+    """Văn bản dòng chính (không gồm nội dung chú thích chân trang), theo thứ tự đọc.
 
     Mỗi phần tử là văn bản của một đoạn. Đây là "chuẩn" để đối chiếu với PDF.
+    `fn_marker` (nếu có) được chèn đúng chỗ số chú thích xuất hiện trong câu.
     """
     out: list[str] = []
     for b in iter_blocks(blocks):
         if isinstance(b, Paragraph):
-            out.append(b.text)
+            if fn_marker:
+                out.append(b.label + "".join(fn_marker if r.footnote is not None else r.text for r in b.runs))
+            else:
+                out.append(b.text)
     return out
 
 

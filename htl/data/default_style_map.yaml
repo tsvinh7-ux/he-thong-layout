@@ -12,7 +12,7 @@
 - {pattern: 'heading ?2|h2|b ?head', role: h2}
 - {pattern: 'heading ?3|h3|c ?head', role: h3}
 - {pattern: 'heading ?[4-9]|h[4-9]|d ?head', role: h4}
-- {pattern: 'caption|fig(ure)? ?cap(tion)?|chú thích hình', role: caption}
+- {pattern: 'caption|image ?caption|fig(ure)? ?cap(tion)?|chú thích hình', role: caption}
 - {pattern: 'table ?(caption|title)|tab(le)? ?cap', role: table_caption}
 - {pattern: 'table ?(note|footnote|source)', role: table_note}
 - {pattern: 'table ?(head|heading|header|col ?head).*', role: table_head}
@@ -24,4 +24,4 @@
 - {pattern: 'box.*|key ?points?.*|clinical ?pearls?.*', role: box}
 - {pattern: 'bibliography|references?|ref|ref ?list|tài liệu tham khảo', role: reference}
 - {pattern: 'footnote ?text|endnote ?text', role: footnote}
-- {pattern: 'normal|body ?text.*|default|plain ?text|list ?paragraph|no ?spacing|normal ?\(web\)', role: body}
+- {pattern: 'normal|body ?text.*|default|plain ?text|list ?paragraph|no ?spacing|normal ?\(web\)|first ?paragraph|compact|captioned ?figure|figure', role: body}
